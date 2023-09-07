@@ -17,8 +17,14 @@ const createRoom = async (roomId) => {
 
 const joinRoom = async (roomId) => {
   const accounts = await web3.eth.getAccounts();
+  const message = `Join room: ${roomId}`;
+  const signature = await web3.eth.personal.sign(
+    message,
+    accounts[0],
+    "password"
+  );
   await chatRoom.methods
-    .joinRoom(web3.utils.sha3(roomId))
+    .joinRoom(web3.utils.sha3(roomId), signature)
     .send({ from: accounts[0] });
 };
 
